@@ -15,7 +15,8 @@ const FName AGravitationPawn::MoveForwardBinding("MoveForward");
 
 AGravitationPawn::AGravitationPawn()
 	: MoveForwardAccel(300.f),
-	  MoveBackAccel(300.f)
+	  MoveBackAccel(300.f),
+	  InputEnabled(true)
 {	
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> ShipMesh(TEXT("/Game/TwinStick/Meshes/TwinStickUFO.TwinStickUFO"));
 	// Create the mesh component
@@ -29,13 +30,15 @@ AGravitationPawn::AGravitationPawn()
 	CameraBoom->SetupAttachment(RootComponent);
 	CameraBoom->SetUsingAbsoluteRotation(true); // Don't want arm to rotate when ship does
 	CameraBoom->TargetArmLength = 2500.f;
-	CameraBoom->SetRelativeRotation(FRotator(-80.f, 0.f, 0.f));
+	CameraBoom->SetRelativeRotation(FRotator(-100.f, 0.f, 0.f));
 	CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
 
 	// Create a camera...
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
 	CameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
 	CameraComponent->bUsePawnControlRotation = false;	// Camera does not rotate relative to arm
+	//CameraComponent->SetConstraintAspectRatio(true);
+	//CameraComponent->SetAspectRatio(0.5625);
 
 	ShipMoveComponent = CreateDefaultSubobject<UMoveComponent>(TEXT("ShipMovement"));
 	ShipMoveComponent->SetSpeed(500.f);
@@ -53,13 +56,15 @@ void AGravitationPawn::SetupPlayerInputComponent(class UInputComponent* PlayerIn
 void AGravitationPawn::Tick(float DeltaSeconds)
 {
 	//Using for acceleration
-	const float ForwardValue = GetInputAxisValue(MoveForwardBinding);
+	const float ForwardValue = InputEnabled && GetInputAxisValue(MoveForwardBinding);
+	float Accel = 0.f;
 	if (ForwardValue > 0.f)
 	{
-		ShipMoveComponent->SetAccel(MoveForwardAccel);
+		Accel = MoveForwardAccel;
 	}
 	else if (ForwardValue < 0.f)
 	{
-		ShipMoveComponent->SetAccel(-MoveBackAccel);
+		Accel = -MoveBackAccel;
 	}
+	ShipMoveComponent->SetAccel(Accel);
 }

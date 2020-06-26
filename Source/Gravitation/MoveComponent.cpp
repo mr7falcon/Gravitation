@@ -60,10 +60,14 @@ void UMoveComponent::SimulateGravitationWithActor(APlanet* Influencer, const flo
 	const FVector& p1 = OwnerMesh->GetCenterOfMass();
 	const FVector& p2 = InfluencerMesh->GetCenterOfMass();
 
-	const float m2 = InfluencerMesh->GetMass();
+	float m2 = InfluencerMesh->GetMass();
+	if (Influencer->IsGravitationInverted())
+	{
+		m2 = -m2;
+	}
 
 	static const float RAD_MIN = 0.1f;
-	static const float G = 20000000.f;
+	static const float G = 7000000.f;
 
 	const FVector2D dpos(p2 - p1);
 	const float rsqd = dpos.SizeSquared();

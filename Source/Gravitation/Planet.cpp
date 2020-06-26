@@ -5,7 +5,8 @@
 #include "Engine/CollisionProfile.h"
 
 APlanet::APlanet()
-	: ActiveGraviRadius(0.f)
+	: ActiveGraviRadius(0.f),
+	  InvertedGravitation(false)
 {
 	PrimaryActorTick.bCanEverTick = true;
 
@@ -49,7 +50,7 @@ void APlanet::BeginPlay()
 		MI->SetScalarParameterValue(TEXT("OuterRadius"), relativeRad);
 		const float c1 = MeshComponent->GetMass();
 		const float c2 = 255.f - abs(c1);
-		const FVector color = c1 >= 0.f ? FVector(c1, c2, 0.f) : FVector(0.f, c2, -c1);
+		const FVector color = InvertedGravitation ? FVector(0.f, c2, c1) : FVector(c1, c2, 0.f);
 		MI->SetVectorParameterValue(TEXT("Color"), color);
 		GraviRadiusComponent->SetMaterial(0, MI);
 	}

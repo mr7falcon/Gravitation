@@ -27,7 +27,7 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	FORCEINLINE const float GetSpeed() const { return Speed; }
-	FORCEINLINE void SetSpeed(const float speed);
+	void SetSpeed(const float speed);
 
 	FORCEINLINE const float GetAccel() const { return Accel; }
 	FORCEINLINE void SetAccel(const float accel) { Accel = accel; }

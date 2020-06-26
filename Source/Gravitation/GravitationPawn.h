@@ -36,11 +36,15 @@ public:
 	// Static names for axis bindings
 	static const FName MoveForwardBinding;
 
+	FORCEINLINE void EnablePlayerInput(bool enable) { InputEnabled = enable; }
+
 private:
 	UPROPERTY(Category = Attributes, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MoveForwardAccel;
 
 	UPROPERTY(Category = Attributes, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float MoveBackAccel;
+
+	bool InputEnabled;
 };
 

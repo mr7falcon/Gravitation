@@ -12,6 +12,7 @@ class GRAVITATION_API APlanet : public AActor
 {
 	GENERATED_BODY()
 
+protected:
 	UPROPERTY(Category = Mesh, VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UStaticMeshComponent* MeshComponent;
 
@@ -35,8 +36,12 @@ public:
 
 	FORCEINLINE const float GetActiveRadius() const { return ActiveGraviRadius; }
 
+	FORCEINLINE bool IsGravitationInverted() const { return InvertedGravitation; }
+
 protected:
 
 	UPROPERTY(Category = Attributes, EditAnywhere, BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	float ActiveGraviRadius;
+
+	bool InvertedGravitation;
 };
